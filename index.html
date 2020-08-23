@@ -43,6 +43,7 @@
 
   <!-- City Information -->
   <div id="city-div"></div>
+  <div id="uv-div"></div>
 
   <!-- <div class="temp"></div>
   <div class="humidity"></div>
@@ -82,26 +83,29 @@
 
 
       var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
- 
-      console.log(UVQueryURL);
+      
 
-    console.log(jQuery.getJSON(UVQueryURL));
+    $.getJSON( UVQueryURL, function( data ) {
 
-      var UVObj = jQuery.getJSON(UVQueryURL);
+      var UVObj = [];
 
+     $.each( data, function( key, val ) {
+         UVObj.push(val);
+        });
+     
+        var UVIndex = UVObj[4];
+        console.log(UVIndex);
 
-      console.log(UVObj);
-      console.log(UVObj.responseJSON.value);
+        var cityUVIndex = $("<h2>").text("UV Index:  " + UVIndex)
+        $("#uv-div").empty();
+        $("#uv-div").append(cityUVIndex);
 
-
-    //   $.ajax({url: UVQueryURL, method: "GET"}).then(function(UVObj){$.getJSON(UVObj)});
-    //   var cityUVIndex = $("<h2").text("UV Index:  " + UVObj.value);
-
+    });
 
 
       // Empty the contents of the city-div, append the new artist content
       $("#city-div").empty();
-      $("#city-div").append(cityTemp, cityHumidity, cityWind); //cityUVIndex
+      $("#city-div").append(cityTemp, cityHumidity, cityWind); //, cityUVIndex
 
     });
   }

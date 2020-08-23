@@ -44,18 +44,19 @@
   <!-- City Information -->
   <div id="city-div"></div>
 
-  <div class="temp"></div>
+  <!-- <div class="temp"></div>
   <div class="humidity"></div>
   <div class="wind"></div>
-  <div class="uvIndex"></div>
+  <div class="uvIndex"></div> -->
 
 <script>
+
 
   function searchWeather(city) {
 
     // Querying the weatherapp api for the selected artist, the ?app_id parameter is required, but can equal anything
-    var APIKey = "&app_id=986e1c20e564c29abd61cb165783eb2b"
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + city + APIKey;
+    var APIKey = "&appid=986e1c20e564c29abd61cb165783eb2b"
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",us" + APIKey;
     $.ajax({
       url: queryURL,
       method: "GET"
@@ -67,14 +68,30 @@
       // Constructing HTML containing the city information
       var cityName = $("<h1>").text(response.name);
       var cityURL = $("<a>").attr("href", response.url).append(cityName);
-      var cityImage = $("<img>").attr("src", response.thumb_url);
-      var trackerCount = $("<h2>").text(response.tracker_count + " fans tracking this artist");
-      var upcomingEvents = $("<h2>").text(response.upcoming_event_count + " upcoming events");
-      var goToCity = $("<a>").attr("href", response.url).text("See Tour Dates");
+    
+      // Filling in the pertinent info...
+      var cityTemp = $("<h2>").text("Temperature:  " + response.main.temp);
+      var cityHumidity = $("<h2>").text("Humidity:  " + response.main.humidity);
+      var cityWind = $("<h2>").text("Wind Speed:  " + response.wind.speed);
+    
+
+    //   // Get UV Index 
+    //   var cityLat = response.coord.lat;
+    //   var cityLon = response.coord.lon;
+
+
+
+    //   var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
+ 
+    //   $.ajax({url: UVQueryURL, method: "GET"}).then(function(UVObj){$.getJSON(UVObj)});
+    //   var cityUVIndex = $("<h2").text("UV Index:  " + UVObj.value);
+
+
 
       // Empty the contents of the city-div, append the new artist content
       $("#city-div").empty();
-      $("#city-div").append(cityURL, cityImage, trackerCount, upcomingEvents, goToCity);
+      $("#city-div").append(cityTemp, cityHumidity, cityWind); //cityUVIndex
+
     });
   }
 

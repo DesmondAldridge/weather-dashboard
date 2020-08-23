@@ -75,14 +75,25 @@
       var cityWind = $("<h2>").text("Wind Speed:  " + response.wind.speed);
     
 
-    //   // Get UV Index 
-    //   var cityLat = response.coord.lat;
-    //   var cityLon = response.coord.lon;
+      // Get UV Index 
+      var cityLat = response.coord.lat;
+      var cityLon = response.coord.lon;
+    
 
 
-
-    //   var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
+      var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
  
+      console.log(UVQueryURL);
+
+    console.log(jQuery.getJSON(UVQueryURL));
+
+      var UVObj = jQuery.getJSON(UVQueryURL);
+
+
+      console.log(UVObj);
+      console.log(UVObj.responseJSON.value);
+
+
     //   $.ajax({url: UVQueryURL, method: "GET"}).then(function(UVObj){$.getJSON(UVObj)});
     //   var cityUVIndex = $("<h2").text("UV Index:  " + UVObj.value);
 

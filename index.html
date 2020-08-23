@@ -11,16 +11,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
     <!-- Grandma always said, "Don't forget to include your meyerweb reset..." -->
-    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="assets/reset.css">
 
     <!-- Extra styles... -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
 
 
     <!-- SCRIPT -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="script.js"></script>
+    <script src="assets/script.js"></script>
 
     <!-- Title -->
     <title>Weather Dashboard</title>
@@ -28,29 +28,34 @@
 
 <body>
 
-<!-- Artist Select Box -->
-<form id="artist-form">
+<!-- City Select Box -->
+<form id="city-form">
 
     <!-- Label for Text Box -->
-    <label for="artist-input">Choose Your Artist</label>
+    <label for="city-input">CITY</label>
 
     <!-- Text Input Box -->
-    <input type="text" id="artist-input"><br>
+    <input type="text" id="city-input"><br>
 
     <!-- Submit Button -->
-    <input id="select-artist" type="submit" value="GO!">
+    <input id="select-city" type="submit" value="GO!">
   </form>
 
-  <!-- Artist Information -->
-  <div id="artist-div"></div>
+  <!-- City Information -->
+  <div id="city-div"></div>
 
+  <div class="temp"></div>
+  <div class="humidity"></div>
+  <div class="wind"></div>
+  <div class="uvIndex"></div>
 
 <script>
 
-  function searchBandsInTown(artist) {
+  function searchWeather(city) {
 
-    // Querying the bandsintown api for the selected artist, the ?app_id parameter is required, but can equal anything
-    var queryURL = "https://rest.bandsintown.com/artists/" + artist + "?app_id=codingbootcamp";
+    // Querying the weatherapp api for the selected artist, the ?app_id parameter is required, but can equal anything
+    var APIKey = "&app_id=986e1c20e564c29abd61cb165783eb2b"
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?" + city + APIKey;
     $.ajax({
       url: queryURL,
       method: "GET"
@@ -59,29 +64,29 @@
       // Printing the entire object to console
       console.log(response);
 
-      // Constructing HTML containing the artist information
-      var artistName = $("<h1>").text(response.name);
-      var artistURL = $("<a>").attr("href", response.url).append(artistName);
-      var artistImage = $("<img>").attr("src", response.thumb_url);
+      // Constructing HTML containing the city information
+      var cityName = $("<h1>").text(response.name);
+      var cityURL = $("<a>").attr("href", response.url).append(cityName);
+      var cityImage = $("<img>").attr("src", response.thumb_url);
       var trackerCount = $("<h2>").text(response.tracker_count + " fans tracking this artist");
       var upcomingEvents = $("<h2>").text(response.upcoming_event_count + " upcoming events");
-      var goToArtist = $("<a>").attr("href", response.url).text("See Tour Dates");
+      var goToCity = $("<a>").attr("href", response.url).text("See Tour Dates");
 
-      // Empty the contents of the artist-div, append the new artist content
-      $("#artist-div").empty();
-      $("#artist-div").append(artistURL, artistImage, trackerCount, upcomingEvents, goToArtist);
+      // Empty the contents of the city-div, append the new artist content
+      $("#city-div").empty();
+      $("#city-div").append(cityURL, cityImage, trackerCount, upcomingEvents, goToCity);
     });
   }
 
   // Event handler for user clicking the select-artist button
-  $("#select-artist").on("click", function(event) {
+  $("#select-city").on("click", function(event) {
     // Preventing the button from trying to submit the form
     event.preventDefault();
     // Storing the artist name
-    var inputArtist = $("#artist-input").val().trim();
+    var inputCity = $("#city-input").val().trim();
 
-    // Running the searchBandsInTown function(passing in the artist as an argument)
-    searchBandsInTown(inputArtist);
+    // Running the searchWeather function(passing in the artist as an argument)
+    searchWeather(inputCity);
   });
 </script>
 

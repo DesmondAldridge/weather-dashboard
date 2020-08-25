@@ -122,7 +122,7 @@
           }).then(function(forecastObj) {
             console.log(forecastObj);
 
-            for (i = 0; i < forecastObj.list.length; i++) {
+            for (i = 0; i < 5; i++) {
 
               var futureTemp = forecastObj.list[i].main.temp;
               var futureHumidity = forecastObj.list[i].main.humidity;

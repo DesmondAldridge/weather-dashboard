@@ -41,10 +41,16 @@
     <input id="select-city" type="submit" value="GO!">
   </form>
 
-  <!-- City Information -->
+  <!-- City Info -->
   <div id="city-div"></div>
   <div id="uv-div"></div>
 
+  <!-- Forecast Info-->
+  <div id="forecast1"></div>
+  <div id="forecast2"></div>
+  <div id="forecast3"></div>
+  <div id="forecast4"></div>
+  <div id="forecast5"></div>
 
 
 <script>
@@ -52,7 +58,7 @@
 
   function searchWeather(city) {
 
-    // Querying the weatherapp api for the selected artist, the ?app_id parameter is required, but can equal anything
+    // Querying the weatherapp api for the selected artist
     var APIKey = "&appid=986e1c20e564c29abd61cb165783eb2b"
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",us" + APIKey;
     $.ajax({
@@ -60,7 +66,7 @@
       method: "GET"
     }).then(function(response) {
 
-
+      console.log(response);
 
       // Constructing HTML containing the city information
       var cityName = $("<h1>").text(response.name);
@@ -78,17 +84,15 @@
       // Get UV Index 
       var cityLat = response.coord.lat;
       var cityLon = response.coord.lon;
-    
-
-
+  
       var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
       
 
-        $.getJSON( UVQueryURL, function( data ) {
+        $.getJSON(UVQueryURL, function(data) {
 
-        var UVObj = [];
+         var UVObj = [];
 
-        $.each( data, function( key, val ) {
+         $.each(data, function(key, val) {
             UVObj.push(val);
             });
         
@@ -102,18 +106,48 @@
         });
 
 
-      // Empty the contents of the city-div, append the new artist content
+      // Empty the contents of the city-div, append the new content
       $("#city-div").empty();
       $("#city-div").append(cityTemp, cityHumidity, cityWind); //, cityUVIndex
 
+
+
+      //api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your api key}
+
+      var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us' + APIKey;
+
+      $.ajax({
+            url: forecastQueryURL,
+            method: "GET"
+          }).then(function(forecastObj) {
+            console.log(forecastObj);
+
+            for (i = 0; i < forecastObj.list.length; i++) {
+
+              var futureTemp = forecastObj.list[i].main.temp;
+              var futureHumidity = forecastObj.list[i].main.humidity;
+
+              console.log(futureTemp);
+
+            }
+
+
+
+          })
+
+
+
     });
   }
+
+
+
 
   // Event handler for user clicking the select-artist button
   $("#select-city").on("click", function(event) {
     // Preventing the button from trying to submit the form
     event.preventDefault();
-    // Storing the artist name
+    // Storing the city name
     var inputCity = $("#city-input").val().trim();
 
     // Running the searchWeather function(passing in the artist as an argument)

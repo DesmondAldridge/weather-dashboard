@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
     <!-- Grandma always said, "Don't forget to include your meyerweb reset..." -->
-    <link rel="stylesheet" href="assets/reset.css">
+    <link rel="stylesheet" href="./assets/reset.css">
 
     <!-- Extra styles... -->
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="./assets/style.css">
 
 
     <!-- SCRIPT -->
@@ -41,16 +41,20 @@
     <input id="select-city" type="submit" value="GO!">
   </form>
 
-  <!-- City Info -->
+  <!-- Weather Main -->
+  <div class="container"></div>
+
+  <!-- Today's Weather (for the selected city) -->
   <div id="city-div"></div>
   <div id="uv-div"></div>
 
-  <!-- Forecast Info-->
-  <div id="forecast1"></div>
-  <div id="forecast2"></div>
-  <div id="forecast3"></div>
-  <div id="forecast4"></div>
-  <div id="forecast5"></div>
+  <!-- Forecast -->
+  <div id="forecast"></div>
+    <div id="forecast1"></div>
+    <div id="forecast2"></div>
+    <div id="forecast3"></div>
+    <div id="forecast4"></div>
+    <div id="forecast5"></div>
 
 
 <script>
@@ -68,12 +72,12 @@
 
       console.log(response);
 
-      // Constructing HTML containing the city information
+      // Creating Elements
+      // This is the first time heavily relying on creating the elements over in JS, which previously had been intimidating... milestone!
       var cityName = $("<h1>").text(response.name);
       var cityURL = $("<a>").attr("href", response.url).append(cityName);
     
-      // Filling in the pertinent info...
-      // Converting the temperature to Fahrenheit
+
       var tempFahrenheit = (response.main.temp - 273.15) * 1.80 + 32;
  
       var cityTemp = $("<h2>").text("Temperature:  " + tempFahrenheit.toFixed(2));
@@ -106,30 +110,51 @@
         });
 
 
-      // Empty the contents of the city-div, append the new content
+      // Populating the designated area with the search resutls
       $("#city-div").empty();
-      $("#city-div").append(cityTemp, cityHumidity, cityWind); //, cityUVIndex
+      $("#city-div").append(cityTemp, cityHumidity, cityWind);
 
 
 
-      //api.openweathermap.org/data/2.5/forecast?q={city name}&appid={your api key}
-
+      // FORECAST
       var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us' + APIKey;
 
       $.ajax({
             url: forecastQueryURL,
             method: "GET"
           }).then(function(forecastObj) {
-            console.log(forecastObj);
 
-            for (i = 0; i < 5; i++) {
+            //Tomorrow's forecast
+            var temp1 = forecastObj.list[1].main.temp;
+            var temp2 = forecastObj.list[2].main.temp;
+            var temp3 = forecastObj.list[3].main.temp;
+            var temp4 = forecastObj.list[4].main.temp;
+            var temp5 = forecastObj.list[5].main.temp;
 
-              var futureTemp = forecastObj.list[i].main.temp;
-              var futureHumidity = forecastObj.list[i].main.humidity;
+            var tomorrowsFCTemp = (temp1 - 273.15) * 1.80 + 32;
+            var day2FCTemp = (temp1 - 273.15) * 1.80 + 32;
+            var day3FCTemp = (temp1 - 273.15) * 1.80 + 32;
+            var day4FCTemp = (temp1 - 273.15) * 1.80 + 32;
+            var day5FCTemp = (temp1 - 273.15) * 1.80 + 32;
 
-              console.log(futureTemp);
+            var humidity1 = forecastObj.list[1].main.humidity;
+            var humidity2 = forecastObj.list[2].main.humidity;
+            var humidity3 = forecastObj.list[3].main.humidity;
+            var humidity4 = forecastObj.list[4].main.humidity;
+            var humidity5 = forecastObj.list[5].main.humidity;
 
-            }
+            var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+
+
+
+            // for (i = 0; i < 5; i++) {
+
+            //   var futureTemp = forecastObj.list[i].main.temp;
+            //   var futureHumidity = forecastObj.list[i].main.humidity;
+
+            //   console.log(futureTemp);
+
+            //}
 
 
 
@@ -143,14 +168,12 @@
 
 
 
-  // Event handler for user clicking the select-artist button
+  // City Search
   $("#select-city").on("click", function(event) {
-    // Preventing the button from trying to submit the form
     event.preventDefault();
-    // Storing the city name
+
     var inputCity = $("#city-input").val().trim();
 
-    // Running the searchWeather function(passing in the artist as an argument)
     searchWeather(inputCity);
   });
 </script>

@@ -124,7 +124,9 @@
             method: "GET"
           }).then(function(forecastObj) {
 
-            //Tomorrow's forecast
+            console.log(forecastObj);
+
+            // Forecast Info
             var temp1 = forecastObj.list[1].main.temp;
             var temp2 = forecastObj.list[2].main.temp;
             var temp3 = forecastObj.list[3].main.temp;
@@ -143,8 +145,25 @@
             var humidity4 = forecastObj.list[4].main.humidity;
             var humidity5 = forecastObj.list[5].main.humidity;
 
-            var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
 
+            // var tomorrowDisplay = 
+
+
+            console.log(tomorrowDate);
+            console.log(tomorrowDisplay);
+
+            console.log(forecastObj);
+
+          
+            //Tomorrow's forecast
+            // var fc1Date = $("<h1>").text(forecastObj);
+            //   var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+            //     var fc1Humidity = $("<h2>").text("Humidity:  " + humidity1);
+
+            //   var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+            //     var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+            //       var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+            //         var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
 
 
             // for (i = 0; i < 5; i++) {

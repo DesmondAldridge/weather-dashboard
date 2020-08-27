@@ -1,31 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-
     <!-- STYLES -->
     <!-- Bootstrap's bootstraps... -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    
     <!-- Meyerweb reset -->
     <link rel="stylesheet" href="./assets/reset.css">
-
     <!-- Extra styles... -->
     <link rel="stylesheet" href="./assets/style.css">
 
-
-    <!-- SCRIPT -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="assets/script.js"></script>
-
     <!-- Title -->
     <title>Weather Dashboard</title>
+
 </head>
 
 <body>
@@ -60,153 +51,15 @@
   <div id="forecast5"></div>
 </div>
 
-<!-- The Magic -->
-<script>
+<div id="searches"></div>
 
-  function searchWeather(city) {
-
-    // Querying for the city
-    var APIKey = "&appid=986e1c20e564c29abd61cb165783eb2b"
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",us" + APIKey;
-    $.ajax({
-      url: queryURL,
-      method: "GET"
-    }).then(function(response) {
-
-      // Creating Elements
-      var cityName = $("<h1>").text(response.name);
-      var cityURL = $("<a>").attr("href", response.url).append(cityName);
-    
-
-      var tempFahrenheit = (response.main.temp - 273.15) * 1.80 + 32;
- 
-      var cityTemp = $("<h2>").text("Temperature:  " + tempFahrenheit.toFixed(2));
-      var cityHumidity = $("<h2>").text("Humidity:  " + response.main.humidity);
-      var cityWind = $("<h2>").text("Wind Speed:  " + response.wind.speed);
-
-
-      // Querying for the UV Index 
-      var cityLat = response.coord.lat;
-      var cityLon = response.coord.lon;
-  
-      var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
-      
-        // Thought parsing the URL would be quicker and more concise than another AJAX call... not so sure anymore...
-        $.getJSON(UVQueryURL, function(data) {
-
-         var UVObj = [];
-
-         $.each(data, function(key, val) {
-            UVObj.push(val);
-            });
-        
-            var UVIndex = UVObj[4];
-            console.log(UVIndex);
-            
-            var cityUVIndex = $("<h2>").text("UV Index:  " + UVIndex)
-            // Needed to append it to its own div because I kept having issues with scope or deferred promises, or something else I don't fully understand... like scope and promises...
-            $("#uv-div").empty();
-            $("#uv-div").append(cityUVIndex);
-
-        });
-
-      // Populating the designated area with the search results
-      $("#city-div").empty();
-      $("#city-div").append(cityTemp, cityHumidity, cityWind);
-
-      // FORECAST
-      var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us' + APIKey;
-
-      $.ajax({
-            url: forecastQueryURL,
-            method: "GET"
-          }).then(function(forecastObj) {
-
-            console.log(forecastObj);
-
-            // Forecast Info
-            var temp1 = forecastObj.list[3].main.temp;
-            var temp2 = forecastObj.list[11].main.temp;
-            var temp3 = forecastObj.list[].main.temp;
-            var temp4 = forecastObj.list[].main.temp;
-            var temp5 = forecastObj.list[].main.temp;
-
-            var tomorrowsFCTemp = (temp1 - 273.15) * 1.80 + 32;
-            var day2FCTemp = (temp1 - 273.15) * 1.80 + 32;
-            var day3FCTemp = (temp1 - 273.15) * 1.80 + 32;
-            var day4FCTemp = (temp1 - 273.15) * 1.80 + 32;
-            var day5FCTemp = (temp1 - 273.15) * 1.80 + 32;
-
-            var humidity1 = forecastObj.list[].main.humidity;
-            var humidity2 = forecastObj.list[].main.humidity;
-            var humidity3 = forecastObj.list[].main.humidity;
-            var humidity4 = forecastObj.list[].main.humidity;
-            var humidity5 = forecastObj.list[].main.humidity;
-          
-            //Tomorrow's Forecast
-            var fc1Date= $("<h1>").text(tomorrowsDate);
-              var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
-                var fc1Humidity = $("<h2>").text("Humidity:  " + humidity1);
-
-            //Day 2's Forecast
-            var fc2Date= $("<h1>").text(tomorrowsDate);
-              var fc2Temp = $("<h2>").text("Temperature:  " + day2FCTemp.toFixed(2));
-                var fc2Humidity = $("<h2>").text("Humidity:  " + humidity2);
-
-            //Day 3's Forecast
-            var fc3Date= $("<h1>").text(tomorrowsDate);
-              var fc3Temp = $("<h2>").text("Temperature:  " + day3FCTemp.toFixed(2));
-                var fc3Humidity = $("<h2>").text("Humidity:  " + humidity3);
-                  
-            //Day 4's Forecast
-            var fc4Date= $("<h1>").text(tomorrowsDate);
-              var fc4Temp = $("<h2>").text("Temperature:  " + day4FCTemp.toFixed(2));
-                var fc4Humidity = $("<h2>").text("Humidity:  " + humidity4);
-
-            //Day 5's Forecast
-            var fc5Date= $("<h1>").text(tomorrowsDate);
-              var fc5Temp = $("<h2>").text("Temperature:  " + day5FCTemp.toFixed(2));
-                var fc5Humidity = $("<h2>").text("Humidity:  " + humidity5);
-
-
-            //Forecast Days
-            var tomorrowsDate = moment().add(1, 'days').format("MMM Do");
-            var day2Date = moment().add(2, 'days').format("MMM Do");
-            var day3Date = moment().add(3, 'days').format("MMM Do");
-            var day4Date = moment().add(4, 'days').format("MMM Do");
-            var day5Date = moment().add(5, 'days').format("MMM Do");
-
-
-
-            // for (i = 0; i < 5; i++) {
-
-            //   var futureTemp = forecastObj.list[i].main.temp;
-            //   var futureHumidity = forecastObj.list[i].main.humidity;
-
-            //   console.log(futureTemp);
-
-            //}
-
-
-
-          })
-
-
-
-    });
-  }
-
-  // City Search
-  $("#select-city").click(function(event) {
-    event.preventDefault();
-
-    var inputCity = $("#city-input").val().trim();
-
-    searchWeather(inputCity);
-  });
-</script>
-
-
+<!-- SCRIPT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="./assets/script.js"></script>
+<script src="./assets/buttons.js"></script>
 
     
 </body>

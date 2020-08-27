@@ -110,7 +110,6 @@
 
         });
 
-
       // Populating the designated area with the search results
       $("#city-div").empty();
       $("#city-div").append(cityTemp, cityHumidity, cityWind);
@@ -126,11 +125,11 @@
             console.log(forecastObj);
 
             // Forecast Info
-            var temp1 = forecastObj.list[1].main.temp;
-            var temp2 = forecastObj.list[2].main.temp;
-            var temp3 = forecastObj.list[3].main.temp;
-            var temp4 = forecastObj.list[4].main.temp;
-            var temp5 = forecastObj.list[5].main.temp;
+            var temp1 = forecastObj.list[3].main.temp;
+            var temp2 = forecastObj.list[11].main.temp;
+            var temp3 = forecastObj.list[].main.temp;
+            var temp4 = forecastObj.list[].main.temp;
+            var temp5 = forecastObj.list[].main.temp;
 
             var tomorrowsFCTemp = (temp1 - 273.15) * 1.80 + 32;
             var day2FCTemp = (temp1 - 273.15) * 1.80 + 32;
@@ -138,11 +137,11 @@
             var day4FCTemp = (temp1 - 273.15) * 1.80 + 32;
             var day5FCTemp = (temp1 - 273.15) * 1.80 + 32;
 
-            var humidity1 = forecastObj.list[1].main.humidity;
-            var humidity2 = forecastObj.list[2].main.humidity;
-            var humidity3 = forecastObj.list[3].main.humidity;
-            var humidity4 = forecastObj.list[4].main.humidity;
-            var humidity5 = forecastObj.list[5].main.humidity;
+            var humidity1 = forecastObj.list[].main.humidity;
+            var humidity2 = forecastObj.list[].main.humidity;
+            var humidity3 = forecastObj.list[].main.humidity;
+            var humidity4 = forecastObj.list[].main.humidity;
+            var humidity5 = forecastObj.list[].main.humidity;
           
             //Tomorrow's Forecast
             var fc1Date= $("<h1>").text(tomorrowsDate);
@@ -179,8 +178,6 @@
 
 
 
-
-
             // for (i = 0; i < 5; i++) {
 
             //   var futureTemp = forecastObj.list[i].main.temp;
@@ -199,11 +196,8 @@
     });
   }
 
-
-
-
   // City Search
-  $("#select-city").on("click", function(event) {
+  $("#select-city").click(function(event) {
     event.preventDefault();
 
     var inputCity = $("#city-input").val().trim();

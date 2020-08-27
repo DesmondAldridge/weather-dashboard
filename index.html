@@ -10,7 +10,7 @@
     <!-- Bootstrap's bootstraps... -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
-    <!-- Grandma always said, "Don't forget to include your meyerweb reset..." -->
+    <!-- Meyerweb reset -->
     <link rel="stylesheet" href="./assets/reset.css">
 
     <!-- Extra styles... -->
@@ -18,8 +18,10 @@
 
 
     <!-- SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="assets/script.js"></script>
 
     <!-- Title -->
@@ -38,31 +40,32 @@
     <input type="text" id="city-input"><br>
 
     <!-- Submit Button -->
-    <input id="select-city" type="submit" value="GO!">
-  </form>
+    <input id="select-city" type="submit" value="Search">
 
-  <!-- Weather Main -->
-  <div class="container"></div>
+</form>
 
-  <!-- Today's Weather (for the selected city) -->
-  <div id="city-div"></div>
-  <div id="uv-div"></div>
+<!-- Weather Main -->
+<div class="container"></div>
 
-  <!-- Forecast -->
-  <div id="forecast"></div>
-    <div id="forecast1"></div>
-    <div id="forecast2"></div>
-    <div id="forecast3"></div>
-    <div id="forecast4"></div>
-    <div id="forecast5"></div>
+<!-- Today's Weather (for the selected city) -->
+<div id="city-div"></div>
+<div id="uv-div"></div>
 
+<!-- Forecast -->
+<div id="forecast">
+  <div id="forecast1"></div>
+  <div id="forecast2"></div>
+  <div id="forecast3"></div>
+  <div id="forecast4"></div>
+  <div id="forecast5"></div>
+</div>
 
+<!-- The Magic -->
 <script>
-
 
   function searchWeather(city) {
 
-    // Querying the weatherapp api for the selected artist
+    // Querying for the city
     var APIKey = "&appid=986e1c20e564c29abd61cb165783eb2b"
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",us" + APIKey;
     $.ajax({
@@ -70,10 +73,7 @@
       method: "GET"
     }).then(function(response) {
 
-      console.log(response);
-
       // Creating Elements
-      // This is the first time heavily relying on creating the elements over in JS, which previously had been intimidating... milestone!
       var cityName = $("<h1>").text(response.name);
       var cityURL = $("<a>").attr("href", response.url).append(cityName);
     
@@ -85,13 +85,13 @@
       var cityWind = $("<h2>").text("Wind Speed:  " + response.wind.speed);
 
 
-      // Get UV Index 
+      // Querying for the UV Index 
       var cityLat = response.coord.lat;
       var cityLon = response.coord.lon;
   
       var UVQueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + "986e1c20e564c29abd61cb165783eb2b" + "&lat=" + cityLat + "&lon=" + cityLon;
       
-
+        // Thought parsing the URL would be quicker and more concise than another AJAX call... not so sure anymore...
         $.getJSON(UVQueryURL, function(data) {
 
          var UVObj = [];
@@ -102,19 +102,18 @@
         
             var UVIndex = UVObj[4];
             console.log(UVIndex);
-
+            
             var cityUVIndex = $("<h2>").text("UV Index:  " + UVIndex)
+            // Needed to append it to its own div because I kept having issues with scope or deferred promises, or something else I don't fully understand... like scope and promises...
             $("#uv-div").empty();
             $("#uv-div").append(cityUVIndex);
 
         });
 
 
-      // Populating the designated area with the search resutls
+      // Populating the designated area with the search results
       $("#city-div").empty();
       $("#city-div").append(cityTemp, cityHumidity, cityWind);
-
-
 
       // FORECAST
       var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us' + APIKey;
@@ -144,26 +143,42 @@
             var humidity3 = forecastObj.list[3].main.humidity;
             var humidity4 = forecastObj.list[4].main.humidity;
             var humidity5 = forecastObj.list[5].main.humidity;
-
-
-            // var tomorrowDisplay = 
-
-
-            console.log(tomorrowDate);
-            console.log(tomorrowDisplay);
-
-            console.log(forecastObj);
-
           
-            //Tomorrow's forecast
-            // var fc1Date = $("<h1>").text(forecastObj);
-            //   var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
-            //     var fc1Humidity = $("<h2>").text("Humidity:  " + humidity1);
+            //Tomorrow's Forecast
+            var fc1Date= $("<h1>").text(tomorrowsDate);
+              var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+                var fc1Humidity = $("<h2>").text("Humidity:  " + humidity1);
 
-            //   var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
-            //     var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
-            //       var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
-            //         var fc1Temp = $("<h2>").text("Temperature:  " + tomorrowsFCTemp.toFixed(2));
+            //Day 2's Forecast
+            var fc2Date= $("<h1>").text(tomorrowsDate);
+              var fc2Temp = $("<h2>").text("Temperature:  " + day2FCTemp.toFixed(2));
+                var fc2Humidity = $("<h2>").text("Humidity:  " + humidity2);
+
+            //Day 3's Forecast
+            var fc3Date= $("<h1>").text(tomorrowsDate);
+              var fc3Temp = $("<h2>").text("Temperature:  " + day3FCTemp.toFixed(2));
+                var fc3Humidity = $("<h2>").text("Humidity:  " + humidity3);
+                  
+            //Day 4's Forecast
+            var fc4Date= $("<h1>").text(tomorrowsDate);
+              var fc4Temp = $("<h2>").text("Temperature:  " + day4FCTemp.toFixed(2));
+                var fc4Humidity = $("<h2>").text("Humidity:  " + humidity4);
+
+            //Day 5's Forecast
+            var fc5Date= $("<h1>").text(tomorrowsDate);
+              var fc5Temp = $("<h2>").text("Temperature:  " + day5FCTemp.toFixed(2));
+                var fc5Humidity = $("<h2>").text("Humidity:  " + humidity5);
+
+
+            //Forecast Days
+            var tomorrowsDate = moment().add(1, 'days').format("MMM Do");
+            var day2Date = moment().add(2, 'days').format("MMM Do");
+            var day3Date = moment().add(3, 'days').format("MMM Do");
+            var day4Date = moment().add(4, 'days').format("MMM Do");
+            var day5Date = moment().add(5, 'days').format("MMM Do");
+
+
+
 
 
             // for (i = 0; i < 5; i++) {

@@ -7,8 +7,8 @@ function searchWeather(city) {
     url: queryURL,
     method: "GET",
   }).then(function(response) {
-    localStorage.setItem(city, JSON.stringify(response));
 
+    localStorage.setItem("Last Searched", city);
 
     // Creating Elements
     var cityName = $("<h1>").text(response.name);
@@ -56,7 +56,7 @@ function searchWeather(city) {
           $("#uv-div").empty();
           $("#uv-div").append(cityUVIndex);
 
-          localStorage.setItem(city + " UV Index", UVIndex);
+          // localStorage.setItem(city + " UV Index", UVIndex);
 
       });
 
@@ -73,7 +73,7 @@ function searchWeather(city) {
     }).then(function(forecastObj) {
 
       localStorage.setItem(city + " Forecast", JSON.stringify(forecastObj));
-      var forecastObj = JSON.parse(localStorage.getItem(city + " Forecast"));
+      // var forecastObj = JSON.parse(localStorage.getItem(city + " Forecast"));
 
       // Forecast Info
       var temp1 = forecastObj.list[2].main.temp;
@@ -194,21 +194,17 @@ function renderButtons() {
 }
 
 
+function dataPersist() {
+  var lastCitySearched = localStorage.getItem("Last Searched");
 
+  searchWeather(lastCitySearched)
+}
 
-// function dataPersist() {
-// var lastSearchedCity = JSON.parse(localStorage.getItem(city));
-// var lastSearchedUV = localStorage.getItem(city + " UV Index");
-// var lastSearchedFC = JSON.parse(localStorage.getItem(city + " Forecast"));
+$(document).ready(function() {
 
-// searchWeather(lastSearchedCity)
-// searchWeather(lastSe)
-// }
-// console.log(lastSearchedCity);
-// console.log(lastSearchedUV);
-// console.log(lastSearchedFC);
+  dataPersist();
 
-
+});
 
 
 

@@ -5,20 +5,20 @@ function searchWeather(city) {
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",us" + APIKey;
   $.ajax({
     url: queryURL,
-    method: "GET"
+    method: "GET",
   }).then(function(response) {
+    localStorage.setItem(city, JSON.stringify(response));
+
 
     // Creating Elements
     var cityName = $("<h1>").text(response.name);
     // var cityURL = $("<a>").attr("href", response.url).append(cityName);
   
-
     var tempFahrenheit = (response.main.temp - 273.15) * 1.80 + 32;
 
     var cityTemp = $("<h2>").text("Temperature:  " + tempFahrenheit.toFixed(2));
     var cityHumidity = $("<h2>").text("Humidity:  " + response.main.humidity);
     var cityWind = $("<h2>").text("Wind Speed:  " + response.wind.speed);
-
 
     // Querying for the UV Index 
     var cityLat = response.coord.lat;
@@ -37,7 +37,6 @@ function searchWeather(city) {
       
           var UVIndex = UVObj[4];
 
-          
           var cityUVIndex = $("<h2>").text("UV Index:  " + UVIndex)
 
           if (UVIndex >= 8) {
@@ -57,6 +56,8 @@ function searchWeather(city) {
           $("#uv-div").empty();
           $("#uv-div").append(cityUVIndex);
 
+          localStorage.setItem(city + " UV Index", UVIndex);
+
       });
 
     // Populating the designated area with the search results
@@ -71,7 +72,7 @@ function searchWeather(city) {
       method: "GET"
     }).then(function(forecastObj) {
 
-      console.log(forecastObj);
+      localStorage.setItem(city + " Forecast", JSON.stringify(forecastObj));
 
       // Forecast Info
       var temp1 = forecastObj.list[2].main.temp;

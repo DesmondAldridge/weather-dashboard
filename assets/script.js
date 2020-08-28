@@ -53,13 +53,9 @@ function searchWeather(city) {
             cityUVIndex.css("background", "green");
           }
 
-          
-
           // Needed to append it individually to its own div because I kept having issues with scope or deferred promises, or something else I don't fully understand... like scope and promises...
           $("#uv-div").empty();
           $("#uv-div").append(cityUVIndex);
-
-
 
       });
 
@@ -158,4 +154,4 @@ $("#select-city").click(function(event) {
   searchWeather(inputCity);
 });
 
-            
+          

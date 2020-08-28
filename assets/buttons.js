@@ -1,4 +1,3 @@
-
 var pastSearches = [];
 
 // Displaying past searches
@@ -39,10 +38,10 @@ event.preventDefault();
 
 // var goToCity = searchWeather("data-name");
 
-// $(document).click(".searched-city", function() {
-//     var goToCity = $(this);
-//     searchWeather(goToCity);
-// });
+$(document).click(".searched-city", function() {
+    var goToCity = $(this);
+    searchWeather(goToCity);
+});
 
 // // Calling the renderButtons function to display the initial buttons
 // renderButtons();

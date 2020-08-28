@@ -193,11 +193,37 @@ function renderButtons() {
 
 }
 
+function btnPersist() {
+
+  $("#searches").empty();
+
+  var a = $("<button>");
+
+  a.addClass("searched-city");
+
+  a.attr("data-name", lastCitySearched);
+
+  a.text(pastSearches[i]);
+
+  $("#searches").append(a);
+
+  $(".searched-city").click(function() {
+    event.preventDefault();
+    
+        var goToCity = $(this).attr("data-name");
+        searchWeather(goToCity);
+  
+    });
+
+}
 
 function dataPersist() {
   var lastCitySearched = localStorage.getItem("Last Searched");
 
-  searchWeather(lastCitySearched)
+  searchWeather(lastCitySearched);
+
+  btnPersist();
+
 }
 
 $(document).ready(function() {

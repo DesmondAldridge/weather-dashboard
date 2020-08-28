@@ -10,7 +10,7 @@ function searchWeather(city) {
 
     // Creating Elements
     var cityName = $("<h1>").text(response.name);
-    var cityURL = $("<a>").attr("href", response.url).append(cityName);
+    // var cityURL = $("<a>").attr("href", response.url).append(cityName);
   
 
     var tempFahrenheit = (response.main.temp - 273.15) * 1.80 + 32;
@@ -61,7 +61,7 @@ function searchWeather(city) {
 
     // Populating the designated area with the search results
     $("#city-div").empty();
-    $("#city-div").append(cityName, cityURL, cityTemp, cityHumidity, cityWind);
+    $("#city-div").append(cityName, cityTemp, cityHumidity, cityWind); //cityURL, 
 
     // FORECAST
     var forecastQueryURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + ',us' + APIKey;
@@ -81,10 +81,10 @@ function searchWeather(city) {
       var temp5 = forecastObj.list[34].main.temp;
 
       var tomorrowsFCTemp = (temp1 - 273.15) * 1.80 + 32;
-      var day2FCTemp = (temp1 - 273.15) * 1.80 + 32;
-      var day3FCTemp = (temp2 - 273.15) * 1.80 + 32;
-      var day4FCTemp = (temp3 - 273.15) * 1.80 + 32;
-      var day5FCTemp = (temp4 - 273.15) * 1.80 + 32;
+      var day2FCTemp = (temp2 - 273.15) * 1.80 + 32;
+      var day3FCTemp = (temp3 - 273.15) * 1.80 + 32;
+      var day4FCTemp = (temp4 - 273.15) * 1.80 + 32;
+      var day5FCTemp = (temp5 - 273.15) * 1.80 + 32;
 
       var humidity1 = forecastObj.list[2].main.humidity;
       var humidity2 = forecastObj.list[10].main.humidity;
@@ -145,22 +145,28 @@ function searchWeather(city) {
   });
 }
 
+var pastSearches = [];
+
 // City Search
 $("#select-city").click(function(event) {
   event.preventDefault();
 
   var inputCity = $("#city-input").val().trim().toUpperCase();
-
   searchWeather(inputCity);
+  
+  if (pastSearches.indexOf(inputCity) === -1) {
+    pastSearches.push(inputCity);
+  }
+
+  renderButtons();
+
 });
 
-var pastSearches = [];
 
 // Displaying past searches
 function renderButtons() {
 
     $("#searches").empty();
-
 
     for (var i = 0; i < pastSearches.length; i++) {
 
@@ -174,29 +180,25 @@ function renderButtons() {
 
         $("#searches").append(a);
     }
+
+    $(".searched-city").click(function() {
+      event.preventDefault();
+     
+          var goToCity = $(this).attr("data-name");
+          searchWeather(goToCity);
+    
+      });
+
 }
 
-// Populating the previous searches list
-$("#select-city").click(function(event) {
-event.preventDefault();
 
-    var searchedCity = $("#city-input").val().trim().toUpperCase();
-    // I needed help with the syntax here, I originally (and mistakenly) tried this: searchedCity !== pastSearches.indexOf(searchedCity)
-    // Also tried to add an additional qualifier in the conditional to screen for searches that are !== to 404 errors (not actual cities)
-    if (pastSearches.indexOf(searchedCity) === -1) {
-    pastSearches.push(searchedCity);
-    }
 
-    renderButtons();
-    
-});
 
-$(".searched-city").click(function() {
-event.preventDefault();
 
-    var goToCity = $(this);
 
-    console.log(goToCity);
-    searchWeather(goToCity);
-});
-        
+
+
+
+
+
+

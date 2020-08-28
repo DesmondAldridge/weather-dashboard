@@ -73,6 +73,7 @@ function searchWeather(city) {
     }).then(function(forecastObj) {
 
       localStorage.setItem(city + " Forecast", JSON.stringify(forecastObj));
+      var forecastObj = JSON.parse(localStorage.getItem(city + " Forecast"));
 
       // Forecast Info
       var temp1 = forecastObj.list[2].main.temp;
@@ -192,6 +193,20 @@ function renderButtons() {
 
 }
 
+
+
+
+// function dataPersist() {
+// var lastSearchedCity = JSON.parse(localStorage.getItem(city));
+// var lastSearchedUV = localStorage.getItem(city + " UV Index");
+// var lastSearchedFC = JSON.parse(localStorage.getItem(city + " Forecast"));
+
+// searchWeather(lastSearchedCity)
+// searchWeather(lastSe)
+// }
+// console.log(lastSearchedCity);
+// console.log(lastSearchedUV);
+// console.log(lastSearchedFC);
 
 
 

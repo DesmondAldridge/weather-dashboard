@@ -7,6 +7,19 @@ body {
     width: 500px;
     height: 272px;
     margin-top: 2%;
-    padding: 1%;
+    padding: .5%;
     color: whitesmoke;
+}
+
+input[type="submit"] {
+    border-radius: 25px;
+    background: url(./lightning.gif);
+    margin: 1%;
+    color: whitesmoke;
+    margin-left: 11%;
+}
+
+input[type="text"] {
+    width: 18%;
+    background-color: thistle;
 }

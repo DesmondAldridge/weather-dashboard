@@ -3,7 +3,7 @@
 # **Work Day Planner** <img src="./assets/image-status-passing.png" height="20">
 
 <center>
-<img src="./assets/IMG_0834.jpeg">
+<img src="./assets/weather-app.gif">
 
 
 ## Check out the deployed app <a href="https://desmondaldridge.github.io/weather-dashboard/">here!</a>

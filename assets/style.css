@@ -2,6 +2,10 @@ body {
     background-color: rgb(15, 15, 15);
 }
 
+.row {
+    margin-left: 2%;
+}
+
 #search-bar {
     background-image: url(./totoro-wallpaper.gif);
     width: 500px;

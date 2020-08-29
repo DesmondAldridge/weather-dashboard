@@ -56,8 +56,6 @@ function searchWeather(city) {
           $("#uv-div").empty();
           $("#uv-div").append(cityUVIndex);
 
-          // localStorage.setItem(city + " UV Index", UVIndex);
-
       });
 
     // Populating the designated area with the search results
@@ -72,8 +70,6 @@ function searchWeather(city) {
       method: "GET"
     }).then(function(forecastObj) {
 
-      localStorage.setItem(city + " Forecast", JSON.stringify(forecastObj));
-      // var forecastObj = JSON.parse(localStorage.getItem(city + " Forecast"));
 
       // Forecast Info
       var temp1 = forecastObj.list[2].main.temp;
@@ -155,12 +151,13 @@ $("#select-city").click(function(event) {
 
   var inputCity = $("#city-input").val().trim().toUpperCase();
   searchWeather(inputCity);
-  
+
   if (pastSearches.indexOf(inputCity) === -1) {
     pastSearches.push(inputCity);
   }
 
   renderButtons();
+
 
 });
 
@@ -193,44 +190,22 @@ function renderButtons() {
 
 }
 
-function btnPersist() {
-
-  $("#searches").empty();
-
-  var a = $("<button>");
-
-  a.addClass("searched-city");
-
-  a.attr("data-name", lastCitySearched);
-
-  a.text(pastSearches[i]);
-
-  $("#searches").append(a);
-
-  $(".searched-city").click(function() {
-    event.preventDefault();
-    
-        var goToCity = $(this).attr("data-name");
-        searchWeather(goToCity);
-  
-    });
-
-}
-
 function dataPersist() {
   var lastCitySearched = localStorage.getItem("Last Searched");
 
   searchWeather(lastCitySearched);
 
-  btnPersist();
+  pastSearches = [lastCitySearched]
+
+  renderButtons();
 
 }
 
-$(document).ready(function() {
+//$(document).ready(function() {
 
-  dataPersist();
+dataPersist();
 
-});
+//});
 
 
 

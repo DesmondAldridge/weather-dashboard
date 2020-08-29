@@ -1,0 +1,12 @@
+body {
+    background-color: rgb(15, 15, 15);
+}
+
+#search-bar {
+    background-image: url(./totoro-wallpaper.gif);
+    width: 500px;
+    height: 272px;
+    margin-top: 2%;
+    padding: 1%;
+    color: whitesmoke;
+}

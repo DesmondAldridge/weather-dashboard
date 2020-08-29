@@ -22,25 +22,29 @@
 <body>
 
 <!-- City Select Box -->
-<form id="city-form">
+<div id="search-bar" class="container-fluid">
 
-    <!-- Label for Text Box -->
-    <label for="city-input">CITY</label>
+  <form id="city-form">
 
-    <!-- Text Input Box -->
-    <input type="text" id="city-input"><br>
+      <!-- Label for Text Box -->
+      <label for="city-input">CITY</label>
 
-    <!-- Submit Button -->
-    <input id="select-city" type="submit" value="Search">
+      <!-- Text Input Box -->
+      <input type="text" id="city-input"><br>
 
-</form>
+      <!-- Submit Button -->
+      <input id="select-city" type="submit" value="Search">
 
-<!-- Weather Main -->
-<div class="container"></div>
+  </form>
+  
+</div>
+
 
 <!-- Today's Weather (for the selected city) -->
+<div class="card" style="width: 18rem;">
 <div id="city-div"></div>
 <div id="uv-div"></div>
+</div>
 
 <!-- Forecast -->
 <div id="forecast">
@@ -52,6 +56,8 @@
 </div>
 
 <div id="searches"></div>
+
+
 
 <!-- SCRIPT -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
